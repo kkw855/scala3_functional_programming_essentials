@@ -6,10 +6,6 @@ object Inheritance {
   val cat = new Cat
   val dog = new Dog
 
-  def main(args: Array[String]): Unit = {
-    println(dog) // println(dog.toString)
-  }
-
   class Animal {
     val creatureType = "wild"
 
@@ -28,8 +24,13 @@ object Inheritance {
       this(name, 0)
   }
 
-  class Adult(name: String, age: Int, idCard: String)
-    extends Person(name) // must specify super-constructor
+  def main(args: Array[String]): Unit = {
+    println(dog) // println(dog.toString)
+
+    val croc = new Crocodile
+    val daniel = new Person("Daniel", 99)
+    croc.eat(daniel, dog)
+  }
 
   // overriding
   class Dog extends Animal {
@@ -39,6 +40,9 @@ object Inheritance {
 
     override def toString: String = "a dog"
   }
+
+  class Adult(name: String, age: Int, idCard: String)
+    extends Person(name) // must specify super-constructor
 
   // overloading vs overriding
   class Crocodile extends Animal {
@@ -62,10 +66,10 @@ object Inheritance {
       "I'm eating a human AND the dog"
     )
 
-    // def eat(): Int = 45
+    // def eat(): Int = 45 // not a valid overload
+
     def eat(dog: Dog, person: Person): Unit = println(
       "I'm eating a human AND the dog"
     )
-
   }
 }
