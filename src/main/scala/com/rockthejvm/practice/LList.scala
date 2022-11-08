@@ -18,15 +18,10 @@ abstract class LList[A] {
 
 class Empty[A] extends LList[A] {
   override def head: A = throw new NoSuchElementException
-
   override def tail: LList[A] = throw new NoSuchElementException
-
   override def isEmpty: Boolean = true
-
   override def toString: String = "[]"
-
   override def map[B](transformer: Transformer[A, B]): LList[B] = new Empty[B]
-
   override def filter(predicate: Predicate[A]): LList[A] = this
 }
 
