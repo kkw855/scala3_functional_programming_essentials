@@ -9,15 +9,10 @@ import scala.annotation.tailrec
 // [1,2,3] = [1] -> [2] -> [3] -> |
 abstract class LList[A] {
   def head: A
-
   def tail: LList[A]
-
   def isEmpty: Boolean
-
   def add(element: A): LList[A] = new Cons(element, this)
-
   def map[B](transformer: Transformer[A, B]): LList[B]
-
   def filter(predicate: Predicate[A]): LList[A]
 }
 
@@ -36,7 +31,7 @@ class Empty[A] extends LList[A] {
 }
 
 class Cons[A](override val head: A, override val tail: LList[A])
-  extends LList[A] {
+    extends LList[A] {
   override def isEmpty: Boolean = false
 
   override def toString: String = {
