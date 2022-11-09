@@ -3,28 +3,49 @@ package com.rockthejvm.practice
 import jdk.jfr.TransitionFrom
 
 import java.lang.annotation.Annotation
-import scala.annotation.tailrec
+import scala.annotation.{tailrec, targetName}
 
+//noinspection NoTargetNameAnnotationForOperatorLikeDefinition
 // singly linked list
 // [1,2,3] = [1] -> [2] -> [3] -> |
 abstract class LList[A] {
   def head: A
+
   def tail: LList[A]
+
   def isEmpty: Boolean
+
   def add(element: A): LList[A] = new Cons(element, this)
+
+  infix def ++(anotherList: LList[A]): LList[A]
+
   def map[B](transformer: Transformer[A, B]): LList[B]
+
   def filter(predicate: Predicate[A]): LList[A]
+
+  def flatMap[B](transformer: Transformer[A, LList[B]]): LList[B]
 }
 
+//noinspection NoTargetNameAnnotationForOperatorLikeDefinition
 class Empty[A] extends LList[A] {
   override def head: A = throw new NoSuchElementException
+
   override def tail: LList[A] = throw new NoSuchElementException
+
   override def isEmpty: Boolean = true
+
   override def toString: String = "[]"
+
+  override infix def ++(anotherList: LList[A]): LList[A] = anotherList
+
   override def map[B](transformer: Transformer[A, B]): LList[B] = new Empty[B]
+
   override def filter(predicate: Predicate[A]): LList[A] = this
+
+  override def flatMap[B](transformer: Transformer[A, LList[B]]): LList[B] = new Empty[B]
 }
 
+//noinspection NoTargetNameAnnotationForOperatorLikeDefinition
 class Cons[A](override val head: A, override val tail: LList[A])
     extends LList[A] {
   override def isEmpty: Boolean = false
@@ -37,6 +58,18 @@ class Cons[A](override val head: A, override val tail: LList[A])
 
     s"[${concatenateElements(this.tail, s"$head")}]"
   }
+
+  /*
+    example
+    [1,2,3] ++ [4,5,6] =
+    new Cons(1, [2,3] ++ [4,5,6]) =
+    new Cons(1, new Cons(2, [3] ++ [4,5,6])) =
+    new Cons(1, new Cons(2, new Cons(3, [] ++ [4,5,6]))) =
+    new Cons(1, new Cons(2, new Cons(3, [4,5,6]))) =
+    [1,2,3,4,5,6]
+  */
+  override infix def ++(anotherList: LList[A]): LList[A] =
+    new Cons(head, tail ++ anotherList)
 
   /*
     example
@@ -62,6 +95,18 @@ class Cons[A](override val head: A, override val tail: LList[A])
   override def filter(predicate: Predicate[A]): LList[A] =
     if (predicate.test(head)) new Cons(head, tail.filter(predicate))
     else tail.filter(predicate)
+
+  /*
+    example
+    [1,2,3].flatMap(n => [n, n + 1]) =
+    [1,2] ++ [2,3].flatMap(n => [n, n + 1]) =
+    [1,2] ++ [2,3] ++ [3].flatMap(n => [n, n + 1]) =
+    [1,2] ++ [2,3] ++ [3,4] ++ [].flatMap(n => [n, n + 1]) =
+    [1,2] ++ [2,3] ++ [3,4] ++ [] =
+    [1,2,2,3,3,4]
+  */
+  override def flatMap[B](transformer: Transformer[A, LList[B]]): LList[B] =
+    transformer.transform(head) ++ tail.flatMap(transformer)
 }
 
 /*
@@ -95,6 +140,7 @@ trait Transformer[A, B] {
   def transform(a: A): B
 }
 
+//noinspection ScalaUnusedSymbol
 class Doubler extends Transformer[Int, Int] {
   override def transform(value: Int): Int = value * 2
 }
@@ -146,5 +192,13 @@ object LListTest {
     // filter testing
     val onlyEvenNumbers = first3Numbers.filter(evenPredicate) // [2]
     println(onlyEvenNumbers)
+
+    // test concatenation
+    val listInBothWays = first3Numbers ++ first3Numbers_v2
+    println(listInBothWays)
+
+    // test flatMap
+    val flattenedList = first3Numbers.flatMap(new DoublerList)
+    println(flattenedList)
   }
 }
