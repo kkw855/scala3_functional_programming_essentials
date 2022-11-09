@@ -42,7 +42,8 @@ case class Empty[A]() extends LList[A] {
 
   override def filter(predicate: Predicate[A]): LList[A] = this
 
-  override def flatMap[B](transformer: Transformer[A, LList[B]]): LList[B] = Empty()
+  override def flatMap[B](transformer: Transformer[A, LList[B]]): LList[B] =
+    Empty()
 }
 
 //noinspection NoTargetNameAnnotationForOperatorLikeDefinition
@@ -67,7 +68,7 @@ case class Cons[A](override val head: A, override val tail: LList[A])
     new Cons(1, new Cons(2, new Cons(3, [] ++ [4,5,6]))) =
     new Cons(1, new Cons(2, new Cons(3, [4,5,6]))) =
     [1,2,3,4,5,6]
-  */
+   */
   override infix def ++(anotherList: LList[A]): LList[A] =
     Cons(head, tail ++ anotherList)
 
@@ -104,7 +105,7 @@ case class Cons[A](override val head: A, override val tail: LList[A])
     [1,2] ++ [2,3] ++ [3,4] ++ [].flatMap(n => [n, n + 1]) =
     [1,2] ++ [2,3] ++ [3,4] ++ [] =
     [1,2,2,3,3,4]
-  */
+   */
   override def flatMap[B](transformer: Transformer[A, LList[B]]): LList[B] =
     transformer.transform(head) ++ tail.flatMap(transformer)
 }
@@ -150,7 +151,15 @@ class DoublerList extends Transformer[Int, LList[Int]] {
     Cons(value, Cons(value + 1, Empty()))
 }
 
-//noinspection ScalaFileName, DuplicatedCode
+object LList {
+  @tailrec
+  def find[A](list: LList[A], predicate: Predicate[A]): A =
+    if (list.isEmpty) throw new NoSuchElementException
+    else if (predicate.test(list.head)) list.head
+    else find(list.tail, predicate)
+}
+
+//noinspection ScalaFileName, DuplicatedCode,ConvertExpressionToSAM
 object LListTest {
   def main(args: Array[String]): Unit = {
     val empty = Empty[Int]()
@@ -200,5 +209,16 @@ object LListTest {
     // test flatMap
     val flattenedList = first3Numbers.flatMap(new DoublerList)
     println(flattenedList)
+
+    // find test
+    println(LList.find(first3Numbers, evenPredicate)) // 2
+    println(
+      LList.find(
+        first3Numbers,
+        new Predicate[Int] {
+          override def test(element: Int): Boolean = element > 5
+        }
+      )
+    ) // throws a NSEException
   }
 }

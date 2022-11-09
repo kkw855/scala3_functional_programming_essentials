@@ -3,17 +3,6 @@ package com.rockthejvm.part2oop
 //noinspection ScalaUnusedSymbol,TypeAnnotation
 object Enums {
 
-  val somePermissions: Permissions = Permissions.READ
-  // standard API
-  val somePermissionsOrdinal = somePermissions.ordinal
-  val allPermissions = Permissions.values // array of all possible values of the enum
-  val readPermission: Permissions = Permissions.valueOf("READ") // Permissions.READ
-
-  def main(args: Array[String]): Unit = {
-    somePermissions.openDocument()
-    println(somePermissionsOrdinal)
-  }
-
   object PermissionsWithBits {
     def fromBits(bits: Int): PermissionsWithBits = // whatever
       PermissionsWithBits.NONE
@@ -33,5 +22,17 @@ object Enums {
     case WRITE extends PermissionsWithBits(4) // 010
     case EXECUTE extends PermissionsWithBits(4) // 001
     case NONE extends PermissionsWithBits(4) // 000
+  }
+
+  val somePermissions: Permissions = Permissions.READ
+
+  // standard API
+  val somePermissionsOrdinal = somePermissions.ordinal
+  val allPermissions = Permissions.values // array of all possible values of the enum
+  val readPermission: Permissions = Permissions.valueOf("READ") // Permissions.READ
+
+  def main(args: Array[String]): Unit = {
+    somePermissions.openDocument()
+    println(somePermissionsOrdinal)
   }
 }
