@@ -24,12 +24,6 @@ object PackagesImports { // top-level
 
   val aJavaList: JList[Int] = ???
 
-  // import everything
-
-  import com.rockthejvm.practice.*
-
-  val aPredicate: Predicate[Int] = ???
-
   // import multiple symbols
 
   import PhysicsConstants.{EARTH_GRAVITY, SPEED_OF_LIGHT}
