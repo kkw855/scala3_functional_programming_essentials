@@ -159,18 +159,12 @@ object LListTest {
     val someStrings = Cons("dog", Cons("cat", Empty()))
     println(someStrings)
 
-    val evenPredicate: Int => Boolean = new Function1[Int, Boolean] {
-      override def apply(element: Int): Boolean = element % 2 == 0
-    }
+    val evenPredicate: Int => Boolean = _ % 2 == 0
 
-    val doubler = new Function1[Int, Int] {
-      override def apply(value: Int): Int = value * 2
-    }
+    val doubler: Int => Int = _ * 2
 
-    val doublerList: Int => LList[Int] = new Function1[Int, LList[Int]] {
-      override def apply(value: Int): LList[Int] =
-        Cons(value, Cons(value + 1, Empty()))
-    }
+    val doublerList: Int => LList[Int] =
+      value => Cons(value, Cons(value + 1, Empty()))
 
     // map testing
     val numbersDoubler = first3Numbers.map(doubler)
@@ -195,9 +189,7 @@ object LListTest {
     println(
       LList.find(
         first3Numbers,
-        new Function1[Int, Boolean] {
-          override def apply(element: Int): Boolean = element > 5
-        }
+        _ > 5
       )
     ) // throws a NSEException
   }

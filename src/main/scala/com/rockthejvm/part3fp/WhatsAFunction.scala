@@ -52,12 +52,18 @@ object WhatsAFunction {
   // yes: Transformer[A, B] equivalent with Function[A, B] === A => B
 
   // 3
-  val returningFunction: Int => (Int => Int) = new Function1[Int, Int => Int] {
-    override def apply(a: Int): Int => Int =
-      new Function1[Int, Int] {
-        override def apply(b: Int): Int = a + b
-      }
+  val superAdder = new Function1[Int, Function1[Int, Int]] {
+    override def apply(x: Int) = new Function1[Int, Int] {
+        override def apply(y: Int): Int = x + y
+    }
   }
+
+  val adder2 = superAdder(2)
+  val anAddition_v = adder2(67) // 69
+  // currying
+  val anAddition_v3 = superAdder(2)(67)
+
+  // function values != methods
 
   def main(args: Array[String]): Unit = {
     println(concatenator("I love ", "Scala"))
