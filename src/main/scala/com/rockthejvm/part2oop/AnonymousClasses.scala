@@ -1,6 +1,6 @@
 package com.rockthejvm.part2oop
 
-//noinspection TypeAnnotation
+//noinspection TypeAnnotation,ScalaUnusedSymbol
 object AnonymousClasses {
 
   val someAnimal = new SomeAnimal
