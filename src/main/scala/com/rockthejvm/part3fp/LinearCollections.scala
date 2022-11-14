@@ -101,12 +101,20 @@ object LinearCollections {
     // adding/removing
     val aBiggerSet = aSet + 4 // [1,2,3,4,5]
     val aSmallerSet = aSet - 4 // [1,2,3,5]
-    // concatenation
+    // concatenation == union
     val anotherSet = Set(4,5,6,7,8)
-    val muchBiggerSet = aSet ++ anotherSet
+    val muchBiggerSet = aSet.union(anotherSet)
+    val muchBiggerSet_v2 = aSet ++ anotherSet // same
+    val muchBiggerSet_v3 = aSet | anotherSet // same
+    // difference
+    val aDiffSet = aSet.diff(anotherSet)
+    val aDiffSet_v2 = aSet -- anotherSet // same
+    // intersection
+    val anIntersection = aSet.intersect(anotherSet) // [4,5]
+    val anIntersection_v2 = aSet & anotherSet // same
   }
 
   def main(args: Array[String]): Unit = {
-    smallBenchmark()
+    testSets()
   }
 }
