@@ -70,10 +70,24 @@ object HandlingFailure {
       else throw new RuntimeException("Cannot access host/port combination.")
   }
 
+  // defensive style
+  val finalHtml = try {
+    val conn = HttpService.getConnection(host, port)
+    val html = try {
+      conn.get(myDesiredURL)
+    } catch {
+      case e: RuntimeException => s"<html>${e.getMessage}</html>"
+    }
+  } catch {
+    case e: RuntimeException => s"<html>${e.getMessage}</html>"
+  }
+
+  // purely functional approach
+
+
   val html = for {
     conn <- Try(HttpService.getConnection(host, port))
-    html <- Try(conn.get(myDesiredURL))
-  } yield html
+  } yield conn.get(myDesiredURL)
 
   def main(args: Array[String]): Unit = {
     println(html.getOrElse("Failed"))
