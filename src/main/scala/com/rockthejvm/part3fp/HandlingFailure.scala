@@ -60,6 +60,9 @@ object HandlingFailure {
     def get(url: String): String =
       if (random.nextBoolean()) "<html>Success</html>"
       else throw new RuntimeException("Cannot fetch page right now")
+
+    def getSafe(url: String): Try[String] =
+      Try(get(url))
   }
 
   object HttpService {
@@ -68,6 +71,9 @@ object HandlingFailure {
     def getConnection(host: String, port: String): Connection =
       if (random.nextBoolean()) new Connection
       else throw new RuntimeException("Cannot access host/port combination.")
+
+    def getConnectionSafe(host: String, port: String): Try[Connection] =
+      Try(getConnection(host, port))
   }
 
   // defensive style
@@ -83,13 +89,19 @@ object HandlingFailure {
   }
 
   // purely functional approach
+  val maybeConn = Try(HttpService.getConnection(host, port))
+  val maybeHtml = maybeConn.flatMap(conn => Try(conn.get(myDesiredURL)))
+  val finalResult = maybeHtml.fold(e => s"<html>${e.getMessage}</html>", s => s)
 
 
-  val html = for {
-    conn <- Try(HttpService.getConnection(host, port))
-  } yield conn.get(myDesiredURL)
+  // for-comprehension
+  val maybeHtml_v2 = for {
+    conn <- HttpService.getConnectionSafe(host, port)
+    html <- conn.getSafe(myDesiredURL)
+  } yield html
+  val finalResult_v2 = maybeHtml.fold(e => s"<html>${e.getMessage}</html>", s => s)
 
   def main(args: Array[String]): Unit = {
-    println(html.getOrElse("Failed"))
+    println(finalResult_v2)
   }
 }
