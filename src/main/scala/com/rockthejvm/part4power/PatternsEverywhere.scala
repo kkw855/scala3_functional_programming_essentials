@@ -34,7 +34,7 @@ object PatternsEverywhere {
     (first, second) <- tuples if first < 3
   } yield second * 100
 
-  // bit idea #3: new syntax
+  // bit idea #3: new syntax (python-like)
   val aTuple = (1, 2, 3)
   val (a, b, c) = aTuple
 
