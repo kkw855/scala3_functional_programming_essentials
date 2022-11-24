@@ -49,7 +49,52 @@ object BracelessSyntax {
       s <- List("black", "white")
     yield s"$n$s"
 
+  // pattern matching
+  val meaningOfLife = 42
+  val aPatternMatch = meaningOfLife match {
+    case 1 => "the one"
+    case 2 => "double or nothing"
+    case _ => "something else"
+  }
+
+  // scala 3
+  val aPatternMatch_v2 = meaningOfLife match
+    case 1 => "the one"
+    case 2 => "double or nothing"
+    case _ => "something else"
+
+  // methods without braces
+  def computeMeaningOfLife(arg: Int): Int =
+    val partialResult = 40
+
+
+
+
+
+    partialResult + 2
+
+  // class definition with significant indentation (same for traits, objects, enums etc)
+  class Animal: // compiler expects the body of Animal
+    def eat(): Unit =
+      println("I'm eating")
+    end eat
+
+    def grow(): Unit =
+      println("I'm growing")
+
+  // 3000 more lines of code
+  end Animal // for if, match, for, methods, classes, traits, enums, objects
+
+  // anonymous classes
+  val aSpecialAnimal = new Animal:
+    override def eat(): Unit = println("I'm special")
+
+  // indentation = strictly larger indentation
+  // 3 spaces + 2 tabs > 2 spaces + 2 tabs
+  // 3 spaces + 2 tabs > 3 spaces + 1 tabs
+  // 3 tabs + 2 spaces ??? 2 tabs + 3 spaces
+
   def main(args: Array[String]): Unit = {
-    println(anIfExpression_v5)
+    println(computeMeaningOfLife(100))
   }
 }
