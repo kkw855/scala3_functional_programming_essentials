@@ -6,12 +6,12 @@ object StringOps {
   val aString: String = "Hello, I am learning Scala"
 
   // string functions
-  val secondChar = aString.charAt(1)
+  val secondChar: Char = aString.charAt(1)
   val firstWord = aString.substring(0, 5) // "Hello"
   val words = aString.split(" ") // Array("Hello,", "I", "am", "learning", "Scala")
   val startsWithHello = aString.startsWith("Hello") // true
   val allDashes = aString.replace(' ', '-')
-  val allUppercase = aString.toUpperCase() // also toLowerCase()
+  val allUppercase = aString.toUpperCase // also toLowerCase()
   val nChars = aString.length
 
   // other functions

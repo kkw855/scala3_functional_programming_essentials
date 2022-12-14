@@ -2,7 +2,7 @@ package com.rockthejvm.part2oop
 
 import com.rockthejvm.part2oop.PreventingInheritance.Guitar
 
-//noinspection ScalaUnusedSymbol
+//noinspection ScalaUnusedSymbol,TypeAnnotation
 object AccessModifiers {
 
   val aPerson = new Person("Alice")
@@ -27,15 +27,19 @@ object AccessModifiers {
 
   // complication
   class KidWithParents(
-                        override val name: String,
-                        age: Int,
-                        momName: String,
-                        dadName: String
-                      ) extends Person(name) {
-    val mom = new Person(momName)
+      override val name: String,
+      age: Int,
+      momName: String,
+      dadName: String
+  ) extends Person(name) {
+    var mom = new Person(momName)
     val dad = new Person(dadName)
 
     // def everyoneSayHi(): String =
     //  sayHi() + s"Hi, I'm $name, and here are my parents: " + mom.sayHi() + dad.sayHi() // not legal
   }
+
+  val kid = KidWithParents("a", 10, "b", "c")
+  println(kid.mom.name)
+  println(kid.dad.name)
 }

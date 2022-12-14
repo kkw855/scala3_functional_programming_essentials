@@ -21,7 +21,7 @@ object CaseClasses {
   val danielYounger = daniel.copy(age = 78) // new Person("Daniel", 78)
 
   // 4 - CCs have companion objects
-  val thePersonSingleton = Person
+  val thePersonSingleton: Person.type = Person
   val daniel_v2 = Person("Daniel", 99) // "constructor"
 
   // 5 - CCs have serializable

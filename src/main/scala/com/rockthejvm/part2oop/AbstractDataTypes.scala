@@ -8,7 +8,8 @@ object AbstractDataTypes {
   // abstract classes can't be instantiated
   // val anAnimal: Animal = new Animal
   val aNonExistentAnimal: Animal = null
-  val anInt: Int = throw new NullPointerException
+  
+  // val anInt: Int = throw new NullPointerException
 
   def main(args: Array[String]): Unit = {}
 
@@ -35,7 +36,7 @@ object AbstractDataTypes {
     philosophical difference abstract classes vs traits
     - abstract classes are THINGS
     - traits are BEHAVIORS
-   */
+  */
 
   /*
     Any
@@ -48,7 +49,7 @@ object AbstractDataTypes {
 
 
           scala.Nothing
-   */
+  */
 
   // non-abstract classes must implement the abstract fields/methods
   class Dog extends Animal {

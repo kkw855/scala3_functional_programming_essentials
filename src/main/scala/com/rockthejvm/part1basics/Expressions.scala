@@ -38,18 +38,18 @@ object Expressions {
   /** Exercise:
    * Without running the code, what do you think these values will print out?
    */
-  // 1
+  // Exercise 1
   val someValue = {
     2 < 3
   }
 
-  // 2
+  // Exercise 2
   val someOtherValue = {
     if (someValue) 239 else 986
     42
   }
 
-  // 3
+  // Exercise 3
   val yetAnotherValue: Unit = println("Scala")
   val theUnit: Unit = ()
 
